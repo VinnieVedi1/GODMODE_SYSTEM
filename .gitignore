@@ -1,0 +1,108 @@
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary Files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Cache
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node.js (if using any frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Extra/Archive Folders
+EXTRAS*/
+extras/
+archive/
+old/
+backup/
+
+# Config Files (keep templates)
+config.py
+settings.py
+local_settings.py
+
+# API Keys and Secrets
+secrets.json
+credentials.json
+*.pem
+*.key
+
+# Revenue System Specific
+revenue_data/
+user_data/
+transaction_logs/
+analytics_cache/
