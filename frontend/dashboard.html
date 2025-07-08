@@ -200,92 +200,74 @@
                 startDataUpdates();
                 startUptimeCounter();
             })
-            .catch(error => {
-                console.error('Activation error:', error);
-                document.getElementById('status').innerText = 'RETRYING CONNECTION...';
-                setTimeout(launchSystem, 3000); // Auto-retry every 3s
-            });
-        }
-        
-        function startDataUpdates() {
-            // First immediate update
-            updateLiveData();
-            
-            // Continuous updates every 3 seconds
-            setInterval(updateLiveData, 3000);
-        }
-        
-        function updateLiveData() {
-            fetch('/api/status')
-                .then(response => {
-                    if (!response.ok) throw new Error('API offline');
-                    return response.json();
-                })
-                .then(data => {
-                    document.getElementById('revenue').innerText = '$' + data.revenue.toFixed(2);
-                    document.getElementById('currentRevenue').innerText = '$' + data.revenue.toFixed(2);
-                    document.getElementById('patternsLearned').innerText = data.patterns_learned;
-                    document.getElementById('optimizations').innerText = data.optimizations;
-                    document.getElementById('dailyTarget').innerText = '$' + data.daily_target;
-                    
-                    // Dynamic calculations
-                    const successRate = Math.min(85 + data.patterns_learned * 0.5, 99);
-                    const growthRate = Math.min(50 + data.optimizations * 2, 300);
-                    document.getElementById('successRate').innerText = successRate.toFixed(1) + '%';
-                    document.getElementById('growthRate').innerText = growthRate.toFixed(1) + '%';
-                })
-                .catch(error => {
-                    console.log('Using fallback data:', error.message);
-                    simulateData(); // Fallback to demo data if API fails
-                });
-        }
-        
-        function simulateData() {
-            // Fallback demo logic (same as original)
-            const revenue = parseFloat(document.getElementById('revenue').innerText.replace('$', '')) || 0;
-            const newRevenue = revenue + (Math.random() * 20 + 5);
-            
-            document.getElementById('revenue').innerText = '$' + newRevenue.toFixed(2);
-            document.getElementById('currentRevenue').innerText = '$' + newRevenue.toFixed(2);
-            
-            const patterns = parseInt(document.getElementById('patternsLearned').innerText) || 0;
-            document.getElementById('patternsLearned').innerText = patterns + 1;
-            
-            const optimizations = parseInt(document.getElementById('optimizations').innerText) || 0;
-            if (patterns % 5 === 0) {
-                document.getElementById('optimizations').innerText = optimizations + 1;
-            }
-        }
-        
-        function startUptimeCounter() {
-            setInterval(() => {
-                if (startTime) {
-                    const now = new Date();
-                    const diff = now - startTime;
-                    const hours = Math.floor(diff / 3600000);
-                    const minutes = Math.floor((diff % 3600000) / 60000);
-                    const seconds = Math.floor((diff % 60000) / 1000);
-                    
-                    const uptime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    document.getElementById('uptime').innerText = uptime;
-                }
-            }, 1000);
-        }
-        
-        // Auto-initialize if backend is already running
-        window.addEventListener('load', async () => {
-            try {
-                const status = await fetch('/api/status').then(res => res.json());
-                if (status.status === 'operational') {
-                    document.getElementById('status').innerText = 'GODMODE ACTIVE!';
-                    systemLaunched = true;
-                    startDataUpdates();
-                    startUptimeCounter();
-                }
-            } catch (error) {
-                console.log('System starting fresh...');
-            }
-        });
-    </script>
-</body>
-</html>
+            // ======= REAL GODMODE LAUNCH SYSTEM ======= //
+let godmodeActive = false;
+
+async function launchSystem() {
+  if (godmodeActive) return;
+  
+  // Visual loading state
+  const statusEl = document.getElementById('status');
+  statusEl.innerHTML = '<span class="status-indicator"></span> ACTIVATING GODMODE...';
+  
+  try {
+    // 1. Start backend system
+    const launchResponse = await fetch('/api/launch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    if (!launchResponse.ok) throw new Error('Backend failed to launch');
+    
+    // 2. Confirm activation
+    statusEl.innerHTML = '<span style="color:#00ff88">✓</span> GODMODE ONLINE';
+    godmodeActive = true;
+    
+    // 3. Begin live data stream
+    startLiveDataStream();
+    
+  } catch (error) {
+    statusEl.innerHTML = `<span style="color:#ff6b6b">✗</span> ACTIVATION FAILED: ${error.message}`;
+    console.error('GODMODE ERROR:', error);
+  }
+}
+
+// Live data updates
+function startLiveDataStream() {
+  // First immediate update
+  updateSystemStatus();
+  
+  // Then update every 3 seconds
+  setInterval(updateSystemStatus, 3000);
+}
+
+async function updateSystemStatus() {
+  try {
+    const response = await fetch('/api/status');
+    const data = await response.json();
+    
+    // Update dashboard metrics
+    document.getElementById('revenue').textContent = `$${data.revenue.toFixed(2)}`;
+    document.getElementById('currentRevenue').textContent = `$${data.revenue.toFixed(2)}`;
+    document.getElementById('patternsLearned').textContent = data.patterns_learned;
+    document.getElementById('optimizations').textContent = data.optimizations;
+    document.getElementById('systemStatus').textContent = data.status === 'operational' ? 'ACTIVE' : 'STANDBY';
+    
+  } catch (error) {
+    console.log('Data update skipped:', error.message);
+  }
+}
+
+// Auto-initialize if already active
+window.addEventListener('load', async () => {
+  try {
+    const status = await fetch('/api/status').then(res => res.json());
+    if (status.status === 'operational') {
+      document.getElementById('status').innerHTML = '<span style="color:#00ff88">✓</span> GODMODE ONLINE';
+      godmodeActive = true;
+      startLiveDataStream();
+    }
+  } catch (error) {
+    console.log('Cold start detection failed - manual launch required');
+  }
+});
