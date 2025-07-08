@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "master_revenue_system.py",
+      "src": "godmode_system.py",
       "use": "@vercel/python",
       "config": { "maxLambdaSize": "15mb" }
     },
@@ -12,7 +12,7 @@
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "master_revenue_system.py" },
+    { "src": "/api/(.*)", "dest": "godmode_system.py" },
     { "src": "/(.*)", "dest": "frontend/dashboard.html" }
   ]
 }
