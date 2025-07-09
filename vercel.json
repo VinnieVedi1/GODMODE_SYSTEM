@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/godmode_light.py",  // Vercel-optimized version
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "includeFiles": ["lib/whitelabel.py"]
+      }
+    },
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/ultra/(.*)",
+      "dest": "http://YOUR_LOCAL_IP:5000/$1",  // Local tunnel
+      "headers": {
+        "X-GODMODE-Tier": "ultimate"
+      }
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "api/godmode_light.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/dashboard.html"
+    }
+  ],
+  "regions": ["iad1"],  // Virginia for lowest latency
+  "functions": {
+    "api/godmode_light.py": {
+      "memory": 3008,  // Max for Vercel
+      "maxDuration": 30
+    }
+  }
+}
