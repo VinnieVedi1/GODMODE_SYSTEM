@@ -85,7 +85,7 @@ class UltraFastScalingEngine:
         
         1. Trending topics in business/entrepreneurship
         2. Controversial but valuable takes
-        3. Success story angles
+        3. Success story angles 
         4. Tutorial/how-to formats that get shared
         5. Before/after transformation content
         
