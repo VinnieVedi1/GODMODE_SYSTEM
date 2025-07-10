@@ -815,3 +815,52 @@ if __name__ == "__main__":
         print("🔄 Attempting restart in 10 seconds...")
         time.sleep(10)
         asyncio.run(main())
+
+<script>
+// ===== ULTIMATE LAUNCH SYSTEM ===== //
+let godmodeActive = false;
+const API_BASE = window.location.origin + '/api';
+
+async function launchSystem() {
+  if (godmodeActive) return;
+  
+  const btn = document.querySelector('.mega-launch-btn');
+  const statusEl = document.getElementById('status');
+  
+  // Visual loading state
+  btn.disabled = true;
+  btn.innerHTML = '🚀 INITIALIZING...';
+  statusEl.innerHTML = '<span class="status-indicator"></span> CONNECTING TO NEURAL CORE...';
+
+  try {
+    // 1. Verify API endpoint
+    const ping = await fetch(`${API_BASE}/health`);
+    if (!ping.ok) throw new Error('API unreachable');
+    
+    // 2. Activate GODMODE
+    const launchResponse = await fetch(`${API_BASE}/launch`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-GODMODE-Version': 'ULTRA'
+      }
+    });
+    
+    if (!launchResponse.ok) throw new Error('Activation failed');
+
+    // 3. Update UI
+    statusEl.innerHTML = '<span style="color:#00ff88">✓</span> GODMODE ONLINE';
+    btn.innerHTML = '⚡ SYSTEM ACTIVE ⚡';
+    godmodeActive = true;
+    
+  } catch (error) {
+    statusEl.innerHTML = `<span style="color:#ff6b6b">✗</span> ${error.message}`;
+    btn.innerHTML = '🚀 RETRY ACTIVATION 🚀';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Initialize
+document.querySelector('.mega-launch-btn').onclick = launchSystem;
+</script>
