@@ -273,13 +273,33 @@ window.addEventListener('load', async () => {
   } catch (error) {
     console.log('Cold start detection failed - manual launch required');
   }
-});
 
 <script>
-  document.querySelector('.launch-btn').addEventListener('click', () => {
-    console.log("Button clicked!");  // Check browser console
-    alert("Button working!");        // Temporary test
-  });
+
+let godmodeActive = false;
+
+async function launchSystem() {
+  const btn = document.querySelector('.mega-launch-btn');
+  btn.disabled = true;
+  
+  try {
+    const response = await fetch('/api/launch', { method: 'POST' });
+    if (!response.ok) throw new Error('Launch failed');
+    
+    btn.innerHTML = '⚡ ACTIVE ⚡';
+    document.getElementById('status').innerHTML = 
+      '<span style="color:#00ff88">✓</span> GODMODE ONLINE';
+    godmodeActive = true;
+    
+  } catch (error) {
+    console.error("LAUNCH ERROR:", error);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Initialize
+document.querySelector('.mega-launch-btn').onclick = launchSystem;
 </script>
 
 
