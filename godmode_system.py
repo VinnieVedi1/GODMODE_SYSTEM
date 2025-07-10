@@ -229,8 +229,13 @@ class Godmode System:
             'stripe': StripeTracker(self),
             'affiliate': AffiliateTracker(self),
             'kindle': KindleTracker(self)
-        }
+            'payhip': PayhipTracker(self) 
+            'pipedream': PipedreamTracker(self)
         
+    
+        
+         }
+    
         self.revenue_trackers = {}
         for source, tracker in revenue_sources.items():
             try:
