@@ -42,7 +42,7 @@ from pathlib import Path
 print("🚀 INITIALIZING GODMODE SYSTEM...")
 print("=" * 60)
 
-class Godmode System:
+class GodmodeSystem:
     def __init__(self):
         self.version = "2.0 - Auto-Improving"
         self.start_time = datetime.now()
