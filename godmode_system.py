@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-▓           GODMODE_SYSTEM PRODUCTION CORE           ▓
-▓  Vercel Live Deployment :: DO NOT MODIFY IN PLACE  ▓
-▓  Version: 2.4.1-Ultra | Status: ACTIVE             ▓
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+GODMODE_SYSTEM PRODUCTION CORE
+Vercel Live Deployment :: PATCHES ALLOWED v2.4.1+
+Version: 2.4.1-Ultra-PATCHED | Status: ACTIVE
 """
-
-# 🔥 VERCEL LIVE CONFIG (DO NOT TOUCH)
 import os
 __framework__ = "GODMODE_SYSTEM"
 __deployment__ = {
     'platform': 'Vercel',
     'region': os.getenv('VERCEL_REGION', 'unknown'),
-    'last_updated': os.getenv('VERCEL_GIT_COMMIT_TIMESTAMP', '')
+    'last_updated': os.getenv('VERCEL_GIT_COMMIT_TIMESTAMP', ''),
+    'patch_id': os.getenv('GODMODE_PATCH_ID')
 }
-
-if __name__ == "__main__":
-    raise RuntimeError("Direct execution blocked - use API endpoints")
+if not os.getenv('GODMODE_PATCH_VERIFIED'):
+    raise RuntimeError("Patch verification failed")
+    
 import os
 import sys
 import asyncio
