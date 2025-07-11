@@ -26,8 +26,8 @@ class OmniscientAILearningEngine:
             'market_prediction': 0.82,         # Market prediction accuracy
             'cross_correlation': 0.88,         # Cross-market analysis
             'news_synthesis': 0.91,            # News pattern synthesis
-            'quantum_learning': False,         # Unlocks at IQ 10,000+
-            'omniscient_mode': False          # Unlocks at IQ 50,000+
+            'quantum_learning': True,         # Unlocks at IQ 10,000+
+            'omniscient_mode': True          # Unlocks at IQ 50,000+
         }
         
         # Learning State Tracking
@@ -152,10 +152,10 @@ class OmniscientAILearningEngine:
             learning_results['intelligence_growth'] = intelligence_boost
             
             # Step 2: Omniscient Data Collection
-            if self.has_api_keys():
-                omniscient_data = await self.collect_omniscient_data()
-            else:
-                omniscient_data = self.generate_demo_omniscient_data()
+            if not self.has_api_keys():
+            raise RuntimeError("Missing required API keys for omniscient data collection.")
+            omniscient_data = await self.collect_omniscient_data()
+
             
             # Step 3: Cross-Market Pattern Analysis
             patterns = await self.analyze_omniscient_patterns(omniscient_data)
