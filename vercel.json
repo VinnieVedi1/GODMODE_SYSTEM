@@ -25,6 +25,12 @@
     { 
       "src": "/(.*)", 
       "dest": "frontend/dashboard.html" 
+
+      {
+       "src": "/",
+       "dest": "index.html"
+      }
+
     }
   ]
 }
