@@ -24,7 +24,7 @@
     },
     { 
       "src": "/(.*)", 
-      "dest": "frontend/dashboard.html"
+      "dest": "frontend/GODMODE_UI.html"
     }
   ]
 }
