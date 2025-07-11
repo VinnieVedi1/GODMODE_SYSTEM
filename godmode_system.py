@@ -65,6 +65,8 @@ class GodmodeSystem:
         self.openai_key = os.getenv('OPENAI_API_KEY')
         self.email_user = os.getenv('EMAIL_USER')
         self.email_pass = os.getenv('EMAIL_PASS')
+        self.openai_model = os.getenv('OPENAI_MODEL', 'gpt-4o')
+
         
         # Revenue platforms
         self.stripe_key = os.getenv('STRIPE_SECRET_KEY')
@@ -247,13 +249,8 @@ class GodmodeSystem:
             'stripe': StripeTracker(self),
             'affiliate': AffiliateTracker(self),
             'kindle': KindleTracker(self)
-            'payhip': PayhipTracker(self) 
-            'pipedream': PipedreamTracker(self)
-        
-    
-        
-         }
-    
+            'payhip': PayhipTracker(self)
+        }
         self.revenue_trackers = {}
         for source, tracker in revenue_sources.items():
             try:
@@ -468,11 +465,11 @@ class AutoImprovingAI:
         success_score = min(revenue / max(avg_revenue, 1), 2.0)  # Cap at 2x
         
         # Store in learning database
-        self.master.conn.execute(
+        self.godmode.conn.execute(
             "INSERT INTO learning_patterns (action_type, inputs, outputs, success_score, timestamp) VALUES (?, ?, ?, ?, ?)",
             ('revenue_generation', json.dumps(pattern_data), json.dumps({'revenue': revenue}), success_score, datetime.now())
         )
-        self.master.conn.commit()
+        self.godmode.conn.commit()
         
         # Learn timing patterns
         if success_score > 1.2:  # 20% above average
@@ -498,7 +495,6 @@ class AutoImprovingAI:
             'gumroad': self.amplify_gumroad_success,
             'stripe': self.amplify_stripe_success,
             'affiliate': self.amplify_affiliate_success,
-            'kindle': self.amplify_kindle_success
         }
         
         if source in amplification_strategies:
@@ -507,7 +503,7 @@ class AutoImprovingAI:
     async def amplify_gumroad_success(self):
         """Amplify Gumroad success"""
         # Create more products
-        await self.master.create_additional_gumroad_products()
+        await self.godmode.create_additional_gumroad_products()
         
         # Optimize pricing
         await self.optimize_gumroad_pricing()
@@ -519,8 +515,8 @@ class AutoImprovingAI:
 class PatternRecognizer:
     """Recognizes patterns in performance data"""
     
-    def __init__(self, master_system):
-        self.master = master_system
+    def __init__(self, godmode_system):
+        self.godmode = godmode_system
         self.patterns = {}
     
     async def start_pattern_analysis(self):
@@ -571,8 +567,8 @@ class PatternRecognizer:
 class OptimizationEngine:
     """Handles all optimization tasks"""
     
-    def __init__(self, master_system):
-        self.master = master_system
+    def __init__(self, godmode_system):
+        self.godmode = godmode_system
     
     async def start_optimization_cycles(self):
         """Start optimization cycles"""
@@ -616,8 +612,8 @@ class OptimizationEngine:
 class MonitoringSystem:
     """24/7 monitoring and alerting"""
     
-    def __init__(self, master_system):
-        self.master = master_system
+    def __init__(self, godmode_system):
+        self.godmode = godmode_system
         self.alerts_sent = set()
     
     async def monitor_system_health(self):
@@ -644,8 +640,8 @@ class MonitoringSystem:
 class EmailNotifier:
     """Handles all email notifications"""
     
-    def __init__(self, master_system):
-        self.master = master_system
+    def __init__(self, godmode_system):
+        self.godmode = godmode_system
     
     async def send_launch_notification(self):
         """Send system launch notification"""
@@ -781,19 +777,6 @@ class AffiliateTracker:
         # Track affiliate commissions
         return 89.33
 
-
-class KindleTracker:
-    def __init__(self, master_system):
-        self.master = master_system
-    
-    async def initialize(self):
-        print("   📚 Kindle tracking initialized")
-    
-    async def get_daily_revenue(self):
-        # Track Kindle royalties
-        return 67.91
-
-
 # Main execution
 async def main():
     """Main function to launch the entire system"""
@@ -876,7 +859,7 @@ async function launchSystem() {
     btn.innerHTML = '🚀 RETRY ACTIVATION 🚀';
   } finally {
     btn.disabled = false;
-  }
+  }theres 
 }
 
 // Initialize
