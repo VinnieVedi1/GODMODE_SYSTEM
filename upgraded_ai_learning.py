@@ -18,13 +18,13 @@ class OmniscientAILearningEngine:
         
         # Core AI Intelligence (Starting at 247 IQ)
         self.ai_intelligence = {
-            'base_iq': 247,                    # Starting intelligence
-            'current_iq': 247,                 # Real-time intelligence
+            'base_iq': 251,                    # Starting intelligence
+            'current_iq': 251,                 # Real-time intelligence
             'learning_velocity': 1.25,         # 25% weekly growth
             'weekly_growth_rate': 0.25,        # 25% weekly
             'pattern_recognition': 0.95,       # 95% accuracy
-            'market_prediction': 0.82,         # Market prediction accuracy
-            'cross_correlation': 0.88,         # Cross-market analysis
+            'market_prediction': 0.91,         # Market prediction accuracy
+            'cross_correlation': 0.90,         # Cross-market analysis
             'news_synthesis': 0.91,            # News pattern synthesis
             'quantum_learning': True,         # Unlocks at IQ 10,000+
             'omniscient_mode': True          # Unlocks at IQ 50,000+
@@ -90,12 +90,18 @@ class OmniscientAILearningEngine:
                     'url': 'https://api.coindesk.com/v1/bpi/currentprice.json',
                     'api_key': None,  # Free API
                     'coverage': 'crypto_markets'
+                },   
+                'polygon': {
+                    'url': 'https://polygon-rpc.com/.
+                    'api_key': os.getenv('POLYGON_API_KEY'),
+                    'coverage': 'crypto_markets'              
                 },
                 'fixer_io': {
                     'url': 'http://data.fixer.io/api/latest',
                     'api_key': os.getenv('FIXER_IO_API_KEY'),
                     'coverage': 'forex_rates'
-                }
+               
+               }
             },
             
             # 📱 Social Media Intelligence
