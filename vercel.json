@@ -1,7 +1,6 @@
 {
   "version": 2,
   "builds": [
-      } 
     {
       "src": "godmode_system.py",
       "use": "@vercel/python",
@@ -9,8 +8,8 @@
         "maxLambdaSize": "15mb",
         "includeFiles": ["lib/*.py"]
       }
-    }
-    
+    },
+    {
       "src": "frontend/**",
       "use": "@vercel/static"
     }
@@ -22,16 +21,11 @@
       "headers": {
         "Cache-Control": "no-store"
       }
-    }
-   { 
+    },
+    { 
       "src": "/(.*)", 
-      "dest": "frontend/dashboard.html" 
-
-      {
-       "src": "/",
-       "dest": "index.html"
-      }
-
+      "dest": "frontend/dashboard.html"
     }
   ]
 }
+
