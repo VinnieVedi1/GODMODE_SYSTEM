@@ -1,21 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-GODMODE_SYSTEM PRODUCTION CORE
-Vercel Live Deployment :: PATCHES ALLOWED v2.4.1+
-Version: 2.4.1-Ultra-PATCHED | Status: ACTIVE
-"""
-import os
-__framework__ = "GODMODE_SYSTEM"
-__deployment__ = {
-    'platform': 'Vercel',
-    'region': os.getenv('VERCEL_REGION', 'unknown'),
-    'last_updated': os.getenv('VERCEL_GIT_COMMIT_TIMESTAMP', ''),
-    'patch_id': os.getenv('GODMODE_PATCH_ID')
-}
-if not os.getenv('GODMODE_PATCH_VERIFIED'):
-    raise RuntimeError("Patch verification failed")
-    
+# godmode_system.py
 import os
 import sys
 import asyncio
@@ -29,6 +12,8 @@ from typing import Dict, List, Any, Optional
 import requests
 import openai
 import smtplib
+import aiohttp
+from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import schedule
@@ -65,7 +50,30 @@ class GodmodeSystem:
         self.openai_key = os.getenv('OPENAI_API_KEY')
         self.email_user = os.getenv('EMAIL_USER')
         self.email_pass = os.getenv('EMAIL_PASS')
-        self.openai_model = os.getenv('OPENAI_MODEL', 'gpt-4o')
+        import openai, os, asyncio
+
+     openai.api_key = os.getenv("OPENAI_API_KEY")
+
+     async def query_gpt4o(prompt): 
+     loop = asyncio.get_event_loop()
+     try:
+        response = await loop.run_in_executor(
+            None,
+            lambda: openai.ChatCompletion.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": "You are the world’s smartest
+                     revenue strategist and market predicter AI."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=200,
+                temperature=0.5,
+            ),
+        )
+        return response.choices[0].message['content']
+    except Exception as e:
+        print(f"OpenAI API error: {e}")
+        return None
 
         
         # Revenue platforms
@@ -172,9 +180,9 @@ class GodmodeSystem:
         
         print("📡 Monitoring system active")
     
-    async def launch_godmode_system(self):
-        """🚀💎🧠 GODMODE SYSTEM 🧠💎🚀"""
-        print("...🚀💎🧠 GODMODE SYSTEM 🧠💎🚀...")
+    async def launch_complete_system(self):
+        """Launch the complete automated revenue system"""
+        print("\n🚀 LAUNCHING GODMODE SYSTEM...")
         print("=" * 60)
         
         # Send launch notification
@@ -247,10 +255,11 @@ class GodmodeSystem:
         revenue_sources = {
             'gumroad': GumroadTracker(self),
             'stripe': StripeTracker(self),
+            'payhip': PayhipTracker(self),
             'affiliate': AffiliateTracker(self),
-            'kindle': KindleTracker(self)
-            'payhip': PayhipTracker(self)
+            
         }
+        
         self.revenue_trackers = {}
         for source, tracker in revenue_sources.items():
             try:
@@ -348,7 +357,7 @@ The AI is learning from this success and optimizing for even better results!
         print("🔄 Starting continuous improvement engine...")
         
         # Schedule different improvement cycles
-        schedule.every(15).minutes.do(self.quick_optimization)
+        schedule.every(10).minutes.do(self.quick_optimization)
         schedule.every(1).hours.do(self.hourly_optimization)
         schedule.every(6).hours.do(self.deep_optimization)
         schedule.every(1).days.do(self.daily_strategy_review)
@@ -365,7 +374,7 @@ The AI is learning from this success and optimizing for even better results!
         print("✅ Continuous improvement: ACTIVE")
     
     def quick_optimization(self):
-        """15-minute quick optimization cycle"""
+        """10-minute quick optimization cycle"""
         asyncio.create_task(self._quick_optimization_async())
     
     async def _quick_optimization_async(self):
@@ -465,11 +474,11 @@ class AutoImprovingAI:
         success_score = min(revenue / max(avg_revenue, 1), 2.0)  # Cap at 2x
         
         # Store in learning database
-        self.godmode.conn.execute(
+        self.master.conn.execute(
             "INSERT INTO learning_patterns (action_type, inputs, outputs, success_score, timestamp) VALUES (?, ?, ?, ?, ?)",
             ('revenue_generation', json.dumps(pattern_data), json.dumps({'revenue': revenue}), success_score, datetime.now())
         )
-        self.godmode.conn.commit()
+        self.master.conn.commit()
         
         # Learn timing patterns
         if success_score > 1.2:  # 20% above average
@@ -495,6 +504,7 @@ class AutoImprovingAI:
             'gumroad': self.amplify_gumroad_success,
             'stripe': self.amplify_stripe_success,
             'affiliate': self.amplify_affiliate_success,
+            'payhip': self.amplify_payhip_success,
         }
         
         if source in amplification_strategies:
@@ -503,19 +513,31 @@ class AutoImprovingAI:
     async def amplify_gumroad_success(self):
         """Amplify Gumroad success"""
         # Create more products
-        await self.godmode.create_additional_gumroad_products()
+        await self.master.create_additional_gumroad_products()
         
         # Optimize pricing
         await self.optimize_gumroad_pricing()
         
         # Increase promotion
         await self.increase_gumroad_promotion()
+        
+    async def amplify_payhip_success(self):
+        """Amplify Payhip success"""
+        # Create more products
+        await self.master.create_additional_payhip_products()
+        
+        # Optimize pricing
+        await self.optimize_payhip_pricing()
+        
+        # Increase promotion
+        await self.increase_payhip_promotion()
+    
 
 
 class PatternRecognizer:
     """Recognizes patterns in performance data"""
     
-    def __init__(self, godmode_system):
+    def __init__(self, godmoe_system):
         self.godmode = godmode_system
         self.patterns = {}
     
@@ -650,7 +672,7 @@ class EmailNotifier:
         message = f"""
 🎉 GODMODE LAUNCH INITIATED! 🎉
 
-Your AI-powered revenue system is now deploying across all platforms:
+Your GODMODE SYSTEM is now deploying across all platforms:
 
 ✅ AI Brain: Learning and optimizing 24/7
 ✅ Revenue Tracking: Real-time monitoring active
@@ -658,7 +680,7 @@ Your AI-powered revenue system is now deploying across all platforms:
 ✅ Multi-Platform: Deploying to 10+ platforms
 ✅ Email Automation: Sequences activated
 
-🎯 TARGET: $1,000+ daily revenue within 60 days
+🎯 TARGET: $1,000+ daily revenue within 14 days
 
 WHAT'S HAPPENING NOW:
 • AI is scanning for profitable niches
@@ -737,7 +759,7 @@ Time to achievement: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 # Revenue tracking classes
 class GumroadTracker:
     def __init__(self, godmode_system):
-        self.master = godmode_system
+        self.godmode = godmode_system
         self.token = godmode_system.gumroad_token
     
     async def initialize(self):
@@ -747,25 +769,27 @@ class GumroadTracker:
     
     async def get_daily_revenue(self):
         # Implement Gumroad API call
-        # For now, return simulated data
-        return 247.83
-
+      
 
 class StripeTracker:
     def __init__(self, godmode_system):
-        self.master = godmode_system
+        self.godmode = godmode_system
         self.key = godmode_system.stripe_key
     
     async def initialize(self):
         if not self.key:
             raise Exception("Stripe key not configured")
         print("   💳 Stripe API connected")
+
+class PayhipTracker:    
+    def __init__(self, godmode_system):
+        self.godmode = godmode_system
+        self.key = godmode_system.payhip_key
     
-    async def get_daily_revenue(self):
-        # Implement Stripe API call
-        return 156.42
-
-
+    async def initialize(self):
+        if not self.key:
+            raise Exception("Payhip key not configured")
+             
 class AffiliateTracker:
     def __init__(self, godmode_system):
         self.godmode = godmode_system
@@ -775,8 +799,7 @@ class AffiliateTracker:
     
     async def get_daily_revenue(self):
         # Track affiliate commissions
-        return 89.33
-
+  
 # Main execution
 async def main():
     """Main function to launch the entire system"""
@@ -809,6 +832,7 @@ async def main():
 
 if __name__ == "__main__":
     # Run the godmode system
+    
     try:
         asyncio.run(main())
     except Exception as e:
@@ -816,10 +840,13 @@ if __name__ == "__main__":
         print("🔄 Attempting restart in 10 seconds...")
         time.sleep(10)
         asyncio.run(main())
+        
+        
+        <script>
 
-<script>
 // ===== ULTIMATE LAUNCH SYSTEM ===== //
-let godmodeActive = false;
+
+let godmodeActive = true;
 const API_BASE = window.location.origin + '/api';
 
 async function launchSystem() {
@@ -829,7 +856,7 @@ async function launchSystem() {
   const statusEl = document.getElementById('status');
   
   // Visual loading state
-  btn.disabled = true;
+  btn.disabled = false;
   btn.innerHTML = '🚀 INITIALIZING...';
   statusEl.innerHTML = '<span class="status-indicator"></span> CONNECTING TO NEURAL CORE...';
 
@@ -843,7 +870,7 @@ async function launchSystem() {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'X-GODMODE-Version': 'ULTRA'
+        'X-GODMODE-Version': 'SYSTEM'
       }
     });
     
@@ -865,3 +892,5 @@ async function launchSystem() {
 // Initialize
 document.querySelector('.mega-launch-btn').onclick = launchSystem;
 </script>
+
+#
